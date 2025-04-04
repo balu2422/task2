@@ -8,12 +8,14 @@ resource "aws_s3_bucket" "mybuckt1122" {
   versioning {
     enabled = true
   }
+}
 
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
+resource "aws_s3_bucket_server_side_encryption_configuration" "mybuckt1122" {
+  bucket = aws_s3_bucket.mybuckt1122.bucket
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
     }
   }
 }
@@ -24,7 +26,7 @@ resource "null_resource" "create_index_file" {
   }
 }
 
-resource "aws_s3_bucket_object" "index_file" {
+resource "aws_s3_object" "index_file" {
   bucket = aws_s3_bucket.mybuckt1122.bucket
   key    = "index.html"
   source = "index.html"
